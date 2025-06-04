@@ -1,7 +1,7 @@
 # UAP_petruk
 Kelompok:
 - Karina Aini       : 2417051063
-- M. Fahmi Farizi   : 2457051017
+- M. Raffi Al-mustafa   : 2457051009
 - M.Daffa Alrasy    : 2457051014
 - Agung Suari       : 2117051091
 # Aplikasi Pemesanan Makanan Sederhana
