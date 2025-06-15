@@ -57,6 +57,59 @@ int knapsack(int maxUang, vector<int>& nilai, vector<int>& berat, int n) {
     );
 }
 
+void tampilkanMenu() {
+    cout << "\n=== MENU MAKANAN & MINUMAN ===\n";
+    for (int i = 0; i < menu.size(); i++) {
+        cout << i + 1 << ". " << menu[i].nama << " - Rp" << menu[i].harga << endl;
+    }
+}
+
+void inputPesanan(bool prioritas = false) {
+    Pesanan p;
+    p.jumlah = vector<int>(menu.size(), 0);
+
+    cout << "Nama pelanggan: ";
+    cin.ignore();
+    cin.getline(p.namaPelanggan, 50);
+
+    int pilihan, jml;
+    char lagi;
+    do {
+        cout << "Pilih menu (1-" << menu.size() << "): ";
+        cin >> pilihan;
+        cout << "Jumlah: ";
+        cin >> jml;
+        if (pilihan >= 1 && pilihan <= menu.size()) {
+            p.jumlah[pilihan - 1] += jml;
+        } else {
+            cout << "Menu tidak valid!\n";
+        }
+        cout << "Tambah lagi? (y/n): ";
+        cin >> lagi;
+    } while (lagi == 'y' || lagi == 'Y');
+
+    p.total = hitungTotalDivide(p.jumlah, 0, menu.size() - 1);
+
+    if (prioritas) {
+        pesananPrioritas.push_front(p);
+    } else {
+        antrian.push(p);
+    }
+
+    stackPembatalan.push(p);
+    cout << "Pesanan berhasil ditambahkan.\n";
+}
+
+void batalkanPesananTerakhir() {
+    if (!stackPembatalan.empty()) {
+        Pesanan dibatalkan = stackPembatalan.top();
+        stackPembatalan.pop();
+        cout << "Pesanan atas nama " << dibatalkan.namaPelanggan << " telah dibatalkan.\n";
+    } else {
+        cout << "Tidak ada pesanan yang bisa dibatalkan.\n";
+    }
+}
+
 void prosesAntrian() {
     vector<Pesanan> semua;
 
