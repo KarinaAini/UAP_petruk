@@ -56,7 +56,55 @@ int knapsack(int maxUang, vector<int>& nilai, vector<int>& berat, int n) {
         knapsack(maxUang, nilai, berat, n - 1)
     );
 }
-#lanjutin
+void prosesAntrian() {
+    vector<Pesanan> semua;
+
+    while (!pesananPrioritas.empty()) {
+        semua.push_back(pesananPrioritas.front());
+        pesananPrioritas.pop_front();
+    }
+
+    while (!antrian.empty()) {
+        semua.push_back(antrian.front());
+        antrian.pop();
+    }
+
+    sort(semua.begin(), semua.end(), bandingkan);
+    for (Pesanan& p : semua) {
+        cout << "\n--- Struk untuk " << p.namaPelanggan << " ---\n";
+        for (int i = 0; i < p.jumlah.size(); i++) {
+            if (p.jumlah[i] > 0) {
+                cout << menu[i].nama << " x" << p.jumlah[i]
+                     << " = Rp" << menu[i].harga * p.jumlah[i] << endl;
+            }
+        }
+        int bayar = p.total;
+        if (p.total >= 100000) {
+            int diskon = p.total / 10;
+            bayar -= diskon;
+            cout << "Diskon 10%: -Rp" << diskon << endl;
+        }
+        cout << "TOTAL BAYAR: Rp" << bayar << endl;
+        riwayatTransaksi.push_back(p);
+    }
+}
+
+vector<vector<int>> hasilRekomendasi;
+
+void cari(int index, int total, vector<int>& kombinasi, const int anggaran) {
+    if (total > anggaran) return;
+    if (index == menu.size()) {
+        if (total <= anggaran && total >= anggaran - 5000) {
+            hasilRekomendasi.push_back(kombinasi);
+        }
+        return;
+    }
+
+    for (int jml = 0; jml <= 5; ++jml) {
+        kombinasi[index] = jml;
+        cari(index + 1, total + jml * menu[index].harga, kombinasi, anggaran);
+    }
+}
 // Fungsi input pesanan
 void inputPesanan() {
     int pilihan, jumlah;
