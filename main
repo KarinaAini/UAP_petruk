@@ -159,3 +159,68 @@ void cari(int index, int total, vector<int>& kombinasi, const int anggaran) {
         cari(index + 1, total + jml * menu[index].harga, kombinasi, anggaran);
     }
 }
+
+void rekomendasiHemat() {
+    hasilRekomendasi.clear();
+    const int anggaran = 30000;
+    vector<int> kombinasi(menu.size(), 0);
+    cari(0, 0, kombinasi, anggaran);
+
+    cout << "\nRekomendasi menu dengan anggaran Rp" << anggaran << ":\n";
+    if (hasilRekomendasi.empty()) {
+        cout << "Tidak ada kombinasi menu yang sesuai.\n";
+    } else {
+        for (const auto& k : hasilRekomendasi) {
+            int total = 0;
+            for (int i = 0; i < k.size(); ++i) {
+                if (k[i] > 0) {
+                    cout << k[i] << "x " << menu[i].nama << "  ";
+                    total += k[i] * menu[i].harga;
+                }
+            }
+            cout << " => Total: Rp" << total << endl;
+        }
+    }
+}
+
+
+void tampilkanRiwayat() {
+    cout << "\n--- Riwayat Transaksi ---\n";
+    for (auto& p : riwayatTransaksi) {
+        cout << p.namaPelanggan << " - Total: Rp" << p.total << endl;
+    }
+}
+
+int main() {
+    int pilih;
+
+    cout << "\n=== APLIKASI WARUNG MAKAN ===\n";
+    cout << "Ketik angka untuk memilih menu:\n";
+    cout << "1. Lihat Menu\n";
+    cout << "2. Tambah Pesanan Biasa\n";
+    cout << "3. Tambah Pesanan Prioritas\n";
+    cout << "4. Batalkan Pesanan Terakhir (Stack)\n";
+    cout << "5. Proses Semua Pesanan\n";
+    cout << "6. Rekomendasi Menu Hemat (Knapsack)\n";
+    cout << "7. Lihat Riwayat Transaksi\n";
+    cout << "0. Keluar\n";
+
+    do {
+        cout << "\nPilih (0–7): ";
+        cin >> pilih;
+
+        switch (pilih) {
+            case 1: tampilkanMenu(); break;
+            case 2: inputPesanan(); break;
+            case 3: inputPesanan(true); break;
+            case 4: batalkanPesananTerakhir(); break;
+            case 5: prosesAntrian(); break;
+            case 6: rekomendasiHemat(); break;
+            case 7: tampilkanRiwayat(); break;
+            case 0: cout << "Terima kasih!\n"; break;
+            default: cout << "Pilihan tidak valid. Ketik 1 untuk melihat ulang menu.\n";
+        }
+    } while (pilih != 0);
+
+    return 0;
+}
