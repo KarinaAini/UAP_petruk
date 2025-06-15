@@ -21,7 +21,9 @@ Ketik angka untuk memilih menu:
 6. Rekomendasi Menu Hemat (Knapsack)
 7. Lihat Riwayat Transaksi
 0. Keluar
+
 Pilih (0-7): ...
+
 Yang mana nanti akan di pilih dari kerangka 0-7 tersebut salah satunya.
 Jika kerangka angka yang di pilih adalah '1' maka outputnya berupa:
 MENU MAKANAN & MINUMAN
