@@ -1,25 +1,62 @@
 #include <iostream>
-#include <iomanip>
+#include <vector>
+#include <queue>
+#include <list>
+#include <deque>
+#include <stack>
+#include <cstring>  // untuk strcmp, strcpy
+#include <algorithm>
 using namespace std;
 
-// Data menu
-const int JUMLAH_MENU = 5;
-string daftarMenu[JUMLAH_MENU] = {"Nasi Goreng", "Mie Ayam", "Sate Ayam", "Es Teh", "Jus Jeruk"};
-int hargaMenu[JUMLAH_MENU] = {15000, 12000, 18000, 5000, 8000};
+struct MenuItem {
+    char nama[30];
+    int harga;
+};
 
-// Array untuk menyimpan jumlah pesanan
-int jumlahPesanan[JUMLAH_MENU] = {0};
+struct Pesanan {
+    char namaPelanggan[50];
+    vector<int> jumlah;
+    int total;
+};
 
-// Fungsi menampilkan menu
-void tampilkanMenu() {
-    cout << "===== MENU WARUNG MAKAN =====" << endl;
-    for (int i = 0; i < JUMLAH_MENU; i++) {
-        cout << i + 1 << ". " << setw(15) << left << daftarMenu[i] 
-             << " - Rp" << hargaMenu[i] << endl;
-    }
-    cout << "=============================" << endl;
+vector<MenuItem> menu = {
+    {"Nasi Goreng", 15000},
+    {"Mie Ayam", 12000},
+    {"Nasi kuning", 16000},
+    {"Sate Ayam", 18000},
+    {"Es Teh", 5000},
+    {"Jus Jeruk", 8000},
+    {"Jus Stroberi", 8500},
+    {"Tempe goreng + Sambal terasi", 4500},
+    {"Tahu goreng + Sambal matah", 6500},
+    {"Air mineral", 3500},
+};
+
+queue<Pesanan> antrian;
+deque<Pesanan> pesananPrioritas;
+list<Pesanan> riwayatTransaksi;
+stack<Pesanan> stackPembatalan;
+
+int hitungTotalDivide(vector<int>& jumlah, int l, int r) {
+    if (l == r) return jumlah[l] * menu[l].harga;
+    int mid = (l + r) / 2;
+    return hitungTotalDivide(jumlah, l, mid) + hitungTotalDivide(jumlah, mid + 1, r);
 }
 
+bool bandingkan(Pesanan a, Pesanan b) {
+    return a.total > b.total;
+}
+
+int knapsack(int maxUang, vector<int>& nilai, vector<int>& berat, int n) {
+    if (n == 0 || maxUang == 0) return 0;
+    if (berat[n - 1] > maxUang)
+        return knapsack(maxUang, nilai, berat, n - 1);
+    return max(
+        nilai[n - 1] + knapsack(maxUang - berat[n - 1], nilai, berat, n - 1),
+        knapsack(maxUang, nilai, berat, n - 1)
+    );
+}
+#lanjutin
 // Fungsi input pesanan
 void inputPesanan() {
     int pilihan, jumlah;
